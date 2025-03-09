@@ -33,5 +33,30 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("TurnRight", this, &ACharacter::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &ACharacter::AddControllerPitchInput);
 }
 
+void APlayerCharacter::MoveForward(float value)
+{
+	// Getting the controller's rotation.
+	FRotationMatrix controllerRotation{ Controller->GetControlRotation() };
+
+	// Getting the forward direction.
+	FVector direction = controllerRotation.GetScaledAxis(EAxis::Type::X);
+
+	AddMovementInput(direction, value);
+}
+
+void APlayerCharacter::MoveRight(float value)
+{
+	// Getting the controller's rotation.
+	FRotationMatrix controllerRotation{ Controller->GetControlRotation() };
+
+	// Getting the right direction.
+	FVector direction = controllerRotation.GetScaledAxis(EAxis::Type::Y);
+
+	AddMovementInput(direction, value);
+}
