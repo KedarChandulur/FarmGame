@@ -72,3 +72,15 @@ Plugins/**/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Unreal Engine Generated Files
+enc_temp_folder/*
+
+# Logs and temporary files
+*.log
+*.temp
+*.tmp
+
+# C++ Debugging Symbols
+*.pdb
+*.idb
