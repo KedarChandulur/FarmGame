@@ -16,6 +16,9 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	check(GEngine != nullptr);
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Hello this is PlayerCharacter"));
 }
 
 // Called every frame
@@ -30,5 +33,37 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	// Player Movement
+	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
+
+	// Player Rotation
+	PlayerInputComponent->BindAxis("TurnRight", this, &ACharacter::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &ACharacter::AddControllerPitchInput);
+
+	// Player Jump
+	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ACharacter::StopJumping);
 }
 
+void APlayerCharacter::MoveForward(float value)
+{
+	// Getting the controller's rotation.
+	FRotationMatrix controllerRotation{ Controller->GetControlRotation() };
+
+	// Getting the forward direction.
+	FVector direction = controllerRotation.GetScaledAxis(EAxis::Type::X);
+
+	AddMovementInput(direction, value);
+}
+
+void APlayerCharacter::MoveRight(float value)
+{
+	// Getting the controller's rotation.
+	FRotationMatrix controllerRotation{ Controller->GetControlRotation() };
+
+	// Getting the right direction.
+	FVector direction = controllerRotation.GetScaledAxis(EAxis::Type::Y);
+
+	AddMovementInput(direction, value);
+}
