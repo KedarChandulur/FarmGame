@@ -14,7 +14,11 @@ UBudgetComponent::UBudgetComponent()
 // Called when the game starts
 void UBudgetComponent::BeginPlay()
 {
-	Super::BeginPlay();	
+	Super::BeginPlay();
+
+	check(GEngine != nullptr);
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("Initial Budget: %d"), currentBudget));
 }
 
 void UBudgetComponent::AddMoney(const int amount)
