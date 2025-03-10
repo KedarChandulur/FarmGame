@@ -84,3 +84,6 @@ enc_temp_folder/*
 # C++ Debugging Symbols
 *.pdb
 *.idb
+
+# Ignore Asset folders
+Content/3D_LOW_POLY_FarmerPack/*
