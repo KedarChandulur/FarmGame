@@ -34,13 +34,13 @@ public:
 	}
 
 private:
-	UFUNCTION(BlueprintCallable, Category = "Budget")
+	UFUNCTION(BlueprintCallable, Category = "Budget", meta = (AllowPrivateAccess = true))
 	void AddMoney(const int amount);
 
-	UFUNCTION(BlueprintCallable, Category = "Budget")
+	UFUNCTION(BlueprintCallable, Category = "Budget", meta = (AllowPrivateAccess = true))
 	void SubstractMoney(const int amount);
 
 private:
-	UPROPERTY(EditAnywhere, Category = "Budget")
+	UPROPERTY(EditAnywhere, Category = "Budget", meta = (AllowPrivateAccess = true))
 	int currentBudget;
 };
