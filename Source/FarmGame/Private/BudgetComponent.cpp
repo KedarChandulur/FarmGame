@@ -25,14 +25,17 @@ void UBudgetComponent::AddMoney(const int amount)
 {
 	check(amount > -1);
 
-	currentBudget += amount;
+	if (amount > -1)
+	{
+		currentBudget += amount;
+	}
 }
 
 void UBudgetComponent::SubstractMoney(const int amount)
 {
 	check(amount > -1);
 
-	if (HasEnoughMoney(amount))
+	if (amount > -1 && HasEnoughMoney(amount))
 	{
 		currentBudget -= amount;
 	}
