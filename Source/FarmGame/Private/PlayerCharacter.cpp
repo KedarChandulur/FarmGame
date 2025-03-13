@@ -4,6 +4,7 @@
 #include "PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "InteractComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -21,6 +22,9 @@ APlayerCharacter::APlayerCharacter()
 
 	// Enabling the pawn to control the camera's rotation.
 	cameraComponent->bUsePawnControlRotation = true;
+
+	interactionComponent = CreateDefaultSubobject<UInteractComponent>(TEXT("Interaction Component"));
+	check(interactionComponent != nullptr);
 }
 
 // Called when the game starts or when spawned
@@ -56,8 +60,22 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	// Player Jump
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ACharacter::StopJumping);
+
+	// Interact
+	PlayerInputComponent->BindAction("Interact", EInputEvent::IE_Pressed, this, &APlayerCharacter::HandleInteraction);
 }
 
+void APlayerCharacter::HandleInteraction()
+{
+	check(interactionComponent != nullptr);
+
+	if (interactionComponent != nullptr)
+	{
+		interactionComponent->Interact();
+	}
+}
+
+// Moves player forward/backward
 void APlayerCharacter::MoveForward(float value)
 {
 	// Getting the controller's rotation.
@@ -69,6 +87,7 @@ void APlayerCharacter::MoveForward(float value)
 	AddMovementInput(direction, value);
 }
 
+// Moves player left/right
 void APlayerCharacter::MoveRight(float value)
 {
 	// Getting the controller's rotation.

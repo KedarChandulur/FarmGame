@@ -32,7 +32,16 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-public:
+private:
+	UFUNCTION()
+	void HandleInteraction();
+
+private:
+	// A Basic FPS camera.
+	UPROPERTY(BlueprintReadOnly, Category = "Camera Component", meta = (AllowPrivateAccess=true))
 	class UCameraComponent* cameraComponent;
 
+	// Interaction component, contains specific step(s) through which the object will be interacted.
+	UPROPERTY(BlueprintReadOnly, Category = "Interact Component", meta = (AllowPrivateAccess=true))
+	class UInteractComponent* interactionComponent;
 };
