@@ -3,6 +3,7 @@
 
 #include "InteractComponent.h"
 #include "GameFramework/PlayerController.h"
+#include "CropActor.h"
 
 // Sets default values for this component's properties
 UInteractComponent::UInteractComponent()
@@ -63,10 +64,12 @@ void UInteractComponent::Interact()
 	{
 		AActor* hitactor = hitresult.GetActor();
 
-		if (hitactor != nullptr)// && hitactor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
+		if (hitactor != nullptr && hitactor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
 		{
 			// Actual interaction happening here.
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Hit: %s"), *hitactor->GetActorLabel())); // GetActorLabel() - Only available in dev builds.
+
+			IInteractable::Execute_Interact(hitactor);
 		}
 		else
 		{
