@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "IInteractable.h"
 #include "CropActor.generated.h"
 
 UENUM(BlueprintType)
@@ -22,7 +23,7 @@ enum class ECropGrowthStage : uint8
 };
 
 UCLASS()
-class FARMGAME_API ACropActor : public AActor
+class FARMGAME_API ACropActor : public AActor, public IInteractable
 {
 	GENERATED_BODY()
 	
@@ -34,10 +35,25 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:
-	void AdvanceGrowthStage();
+public:
+	virtual void Interact_Implementation() override;
 
 private:
+	// Updates the growth stage to next stage.
+	void AdvanceGrowthStage();
+
+	// Method to trigger harvest functionality.
+	void Harvest();
+
+private:
+	// Mesh for representation of the crop.
+	UPROPERTY(VisibleAnywhere, Category = "Crop")
+	UStaticMeshComponent* meshComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "Crop")
+	//class UCapsuleComponent* collisionComponent;
+	class UBoxComponent* collisionComponent;
+
 	UPROPERTY(EditAnywhere, Category = "Crop")
 	ECropType cropType;
 
