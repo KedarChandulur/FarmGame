@@ -2,6 +2,8 @@
 
 
 #include "CropActor.h"
+#include "BudgetComponent.h"
+#include "PlayerCharacter.h"
 //#include "Components/CapsuleComponent.h"
 #include "Components/BoxComponent.h"
 
@@ -46,18 +48,44 @@ void ACropActor::BeginPlay()
 	GetWorldTimerManager().SetTimer(growthTimerHandle, this, &ACropActor::AdvanceGrowthStage, growthTime, true);
 }
 
-void ACropActor::Interact_Implementation()
+void ACropActor::Interact_Implementation(AActor* interactedPlayer)
 {
-	Harvest();
+	if (interactedPlayer == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Interacted player parameter is missing."));
+		return;
+	}
+
+	Harvest(interactedPlayer);
 }
 
-void ACropActor::Harvest()
+void ACropActor::Harvest(AActor* interactedPlayer)
 {
 	if (cropGrowthStage == ECropGrowthStage::Harvestable)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Crop harvested: %s"), *GetActorLabel()); // Again GetActorLabel() only available in dev builds.
+		UE_LOG(LogTemp, Warning, TEXT("Crop harvested: %s"), *GetActorLabel()); // GetActorLabel() only available in dev builds.
 
-		// TODO: Add money to player's budget (need to implement)
+		if (interactedPlayer == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Interacted actor in crop harvest is missing."));
+			check(false);
+			return;
+		}
+
+		APlayerCharacter* player = Cast<APlayerCharacter>(interactedPlayer);
+
+		if (player == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Interacted player in crop harvest is missing."));
+			check(false);
+			return;
+		}
+
+		UE_LOG(LogTemp, Warning, TEXT("Interacted player in crop harvest %s"), *player->GetActorLabel()); // GetActorLabel() only available in dev builds.
+
+		const int harvestValue = 100;
+
+		player->AddMoneyToBudget(harvestValue);
 
 		Destroy();
 	}
@@ -78,6 +106,10 @@ void ACropActor::AdvanceGrowthStage()
 	case ECropGrowthStage::Growing:
 		cropGrowthStage = ECropGrowthStage::Harvestable;
 		GetWorldTimerManager().ClearTimer(growthTimerHandle);
+		break;
+
+	default:
+		UE_LOG(LogTemp, Warning, TEXT("Default called on Advanced Growth Stage"));
 		break;
 	}
 
