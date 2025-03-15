@@ -6,6 +6,8 @@
 #include "Components/CapsuleComponent.h"
 #include "InteractComponent.h"
 
+#include "BudgetComponent.h"
+
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
@@ -23,8 +25,13 @@ APlayerCharacter::APlayerCharacter()
 	// Enabling the pawn to control the camera's rotation.
 	cameraComponent->bUsePawnControlRotation = true;
 
+	// Init interaction component
 	interactionComponent = CreateDefaultSubobject<UInteractComponent>(TEXT("Interaction Component"));
 	check(interactionComponent != nullptr);
+
+	// Init budget component
+	budgetComponent = CreateDefaultSubobject<UBudgetComponent>(TEXT("Budget Component"));
+	check(budgetComponent != nullptr);
 }
 
 // Called when the game starts or when spawned
@@ -58,6 +65,36 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Interact", EInputEvent::IE_Pressed, this, &APlayerCharacter::HandleInteraction);
 }
 
+void APlayerCharacter::AddMoneyToBudget(const int amount) const
+{
+	check(amount > -1);
+
+	if (budgetComponent == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Budget component is missing on player"));
+		check(false);
+		return;
+	}
+
+	budgetComponent->AddMoney(amount);
+	budgetComponent->PrintBudget();
+}
+
+void APlayerCharacter::SubstractMoneyToBudget(const int amount) const
+{
+	check(amount > -1);
+
+	if (budgetComponent == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Budget component is missing on player"));
+		check(false);
+		return;
+	}
+	
+	budgetComponent->SubstractMoney(amount);
+	budgetComponent->PrintBudget();
+}
+
 void APlayerCharacter::HandleInteraction()
 {
 	check(interactionComponent != nullptr);
@@ -69,7 +106,7 @@ void APlayerCharacter::HandleInteraction()
 }
 
 // Moves player forward/backward
-void APlayerCharacter::MoveForward(float value)
+void APlayerCharacter::MoveForward(const float value)
 {
 	// Getting the controller's rotation.
 	FRotationMatrix controllerRotation{ Controller->GetControlRotation() };
@@ -81,7 +118,7 @@ void APlayerCharacter::MoveForward(float value)
 }
 
 // Moves player left/right
-void APlayerCharacter::MoveRight(float value)
+void APlayerCharacter::MoveRight(const float value)
 {
 	// Getting the controller's rotation.
 	FRotationMatrix controllerRotation{ Controller->GetControlRotation() };
