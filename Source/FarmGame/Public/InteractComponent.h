@@ -23,5 +23,5 @@ protected:
 public:	
 	// Used for interacting with other actors/objects in the world.
 	UFUNCTION()
-	void Interact();
+	void Interact() const;
 };

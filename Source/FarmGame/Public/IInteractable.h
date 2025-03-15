@@ -18,5 +18,5 @@ class FARMGAME_API IInteractable
 
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interaction")
-	void Interact();
+	void Interact(AActor* interactedPlayer);
 };

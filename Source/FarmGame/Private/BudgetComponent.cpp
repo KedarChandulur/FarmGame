@@ -21,6 +21,13 @@ void UBudgetComponent::BeginPlay()
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("Initial Budget: %d"), currentBudget));
 }
 
+void UBudgetComponent::PrintBudget() const
+{
+	check(GEngine != nullptr);
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("Current Budget: %d"), currentBudget));
+}
+
 void UBudgetComponent::AddMoney(const int amount)
 {
 	check(amount > -1);

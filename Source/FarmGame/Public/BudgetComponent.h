@@ -33,11 +33,11 @@ public:
 		return currentBudget >= amount;
 	}
 
-private:
-	UFUNCTION(BlueprintCallable, Category = "Budget", meta = (AllowPrivateAccess = true))
+	UFUNCTION(BlueprintCallable, Category = "Budget")
+	void PrintBudget() const;
+
 	void AddMoney(const int amount);
 
-	UFUNCTION(BlueprintCallable, Category = "Budget", meta = (AllowPrivateAccess = true))
 	void SubstractMoney(const int amount);
 
 private:

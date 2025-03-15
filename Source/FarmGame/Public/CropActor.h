@@ -36,14 +36,14 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	virtual void Interact_Implementation() override;
+	virtual void Interact_Implementation(AActor* interactedPlayer) override;
 
 private:
 	// Updates the growth stage to next stage.
 	void AdvanceGrowthStage();
 
 	// Method to trigger harvest functionality.
-	void Harvest();
+	void Harvest(AActor* interactedPlayer);
 
 private:
 	// Mesh for representation of the crop.
@@ -60,10 +60,10 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Crop")
 	ECropGrowthStage cropGrowthStage;
 
+	// Timer helps handle the crop growth
+	FTimerHandle growthTimerHandle;
+
 	// Time taken to reach the harvest stage
 	UPROPERTY(EditAnywhere, Category = "Crop")
 	float growthTime;
-
-	// Timer helps handle the crop growth
-	FTimerHandle growthTimerHandle;
 };

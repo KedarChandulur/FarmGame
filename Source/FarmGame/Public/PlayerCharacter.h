@@ -20,25 +20,30 @@ protected:
 	virtual void BeginPlay() override;
 
 	// Helps move player forward and backward
-	void MoveForward(float value);
+	void MoveForward(const float value);
 
 	// Helps move player right and left
-	void MoveRight(float value);
+	void MoveRight(const float value);
 
 public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void AddMoneyToBudget(const int amount) const;
+
+	void SubstractMoneyToBudget(const int amount) const;
 private:
-	UFUNCTION()
 	void HandleInteraction();
 
 private:
 	// A Basic FPS camera.
-	UPROPERTY(BlueprintReadOnly, Category = "Camera Component", meta = (AllowPrivateAccess=true))
+	UPROPERTY(BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = true))
 	class UCameraComponent* cameraComponent;
 
 	// Interaction component, contains specific step(s) through which the object will be interacted.
-	UPROPERTY(BlueprintReadOnly, Category = "Interact Component", meta = (AllowPrivateAccess=true))
+	UPROPERTY(BlueprintReadOnly, Category = "Interact", meta = (AllowPrivateAccess = true))
 	class UInteractComponent* interactionComponent;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Budget", meta = (AllowPrivateAccess = true))
+	class UBudgetComponent* budgetComponent;
 };
