@@ -26,7 +26,7 @@ void UInteractComponent::BeginPlay()
 }
 
 // First line trace will be performed and once a object is hit, interaction is performed on that specific object.
-void UInteractComponent::Interact()
+void UInteractComponent::Interact() const
 {
 	// Getting the owner pawn to retrive the controller from it.
 	APawn* ownerPawn = Cast<APawn>(GetOwner());
@@ -69,7 +69,7 @@ void UInteractComponent::Interact()
 			// Actual interaction happening here.
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Hit: %s"), *hitactor->GetActorLabel())); // GetActorLabel() - Only available in dev builds.
 
-			IInteractable::Execute_Interact(hitactor);
+			IInteractable::Execute_Interact(hitactor, GetOwner());
 		}
 		else
 		{
